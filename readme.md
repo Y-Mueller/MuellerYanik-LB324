@@ -13,3 +13,5 @@ pre-commit run
 
 ## Aufgabe 4
 Erklären Sie hier, wie Sie das Passwort aus Ihrer lokalen `.env` auf Azure übertragen.
+
+Ich habe auf dem Azure Portal bei den Einstellungen unter  Umgebungsvariablen das Passwort eingetragen.
