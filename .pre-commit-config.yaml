@@ -1,0 +1,56 @@
+repos:
+- repo: https://github.com/psf/black
+  rev: 23.7.0
+  hooks:
+    - id: black
+      name: Python Code Formatter
+      language_version: python3.11
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+    - id: check-yaml
+      name: YAML Syntax Checker
+    - id: check-json
+      name: JSON Syntax Checker
+    - id: end-of-file-fixer
+      name: Fix End-of-File Issues
+    - id: trailing-whitespace
+      name: Remove Trailing Whitespace
+    - id: mixed-line-ending
+      name: Ensure LF Line Endings
+      args: ["--fix=lf"]
+
+- repo: https://github.com/pycqa/flake8
+  rev: 6.1.0
+  hooks:
+    - id: flake8
+      name: Python Linter
+      args: ["--max-line-length=88"]
+
+- repo: local
+  hooks:
+    - id: enforce-commit-hash
+      name: Commit Message Requires Issue Reference
+      language: pygrep
+      entry: '#\d+'
+      args: ["--multiline"]
+      stages: [commit-msg]
+
+    - id: pytest-check
+      name: Run Pytest on Commit
+      entry: python -m pytest
+      language: system
+      stages: [commit]
+      pass_filenames: false
+      always_run: true
+
+    - id: auto-format
+      name: Auto-Format Code
+      entry: |
+        echo "Running auto-formatting tools..."
+        black .
+        flake8
+      language: system
+      stages: [pre-commit]
+      always_run: true

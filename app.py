@@ -13,14 +13,20 @@ entries = []
 
 
 @dataclass
-class Entry():
+class Entry:
     content: str
     timestamp: datetime = datetime.now()
+    happiness: str = ''  # Neues Attribut für das Emoticon
 
 
-@app.route('/')
-def index():
-    return render_template('index.html', entries=entries)
+@app.route('/add_entry', methods=['POST'])
+def add_entry():
+    content = request.form.get('content')
+    happiness = request.form.get('happiness', '')  # Füge happiness hinzu
+    if content:
+        entry = Entry(content=content, happiness=happiness)  # Füge das Emoticon zum Entry hinzu
+        entries.append(entry)
+    return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
